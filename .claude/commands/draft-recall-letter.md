@@ -1,0 +1,11 @@
+---
+description: "Draft one recall letter for every professional who received a recalled lot and has not been told. Written to drafts/, never sent."
+---
+
+# draft-recall-letter
+
+Draft one recall letter for every professional who received a recalled lot and has not been told. Written to drafts/, never sent.
+
+Run `node scripts/crm.mjs draft-recall-letter <lot>`. Add `--json` when you need every field. Resolve the professional, practice, rep, lot, sample, event or territory by name first; if the CLI says a name is ambiguous, list the candidates and ask. Replace every angle-bracket value with a fact from the records or the operator. Never run a placeholder.
+
+Follow the company recall procedure. After each is sent, record it with /recall-told.

@@ -13,12 +13,13 @@ That layer used to be the whole product, because talking to a database was hard.
 
 ## What you give up
 
-- **A visual board.** Stages are a table you ask about, not cards you drag.
-- **A phone app.** It runs where Claude Code runs.
+- **A phone app for the car park.** A rep logging a call between practices wants an app on the phone; here calls are logged by asking, from wherever Claude Code runs. Enterprise DNA builds the phone app into a customer's version.
+- **Approved content on an iPad.** Veeva runs approved presentations and approved email inside the call. Here the call record holds what was detailed; the content stays in your content system.
+- **Signature capture.** Veeva captures the prescriber's signature on the device. Here the paper or electronic receipt is kept where you keep it, and its date is recorded.
 - **A vendor help desk.** This is open source. Enterprise DNA supports the installed version for businesses that want someone to call.
 
 ## Who this fits
 
-Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your team needs a screen to look at all day, keep Veeva CRM. If you need the answers more than the screens, this is cheaper, faster and yours.
+A field force manager, a commercial excellence lead or a compliance lead at a company with 5 to 60 reps in New Zealand or Australia, who would rather ask than click. If every rep must live in an app all day and nobody will ask Claude Code anything, keep Veeva CRM or have the app built. If you need the answers more than the screens, this is cheaper, faster and yours.
 
 Installed and run for you: https://enterprisedna.co/omni/instead-of/veeva-crm

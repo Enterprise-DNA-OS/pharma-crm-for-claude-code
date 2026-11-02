@@ -1,0 +1,4 @@
+Id,Account_vod__c,Call_Date_vod__c,Owner Name,Call_Type_vod__c,Status_vod__c,Detailed_Products_vod__c,Call_Comments_vod__c,Next_Call_Notes_vod__c
+a04VA00000Ca01,001VA0000PeR01,2026-09-14,Priya Raman,Detail Only,Submitted_vod,Cardovex 10 mg,Discussed first line use in older patients.,Bring the dosing card
+a04VA00000Ca02,001VA0000PeR02,15/09/2026,Priya Raman,Detail with Sample,Submitted_vod,GLY500;Cardovex 10 mg,Glyzera detail. Asked for starter packs.,
+a04VA00000Ca03,001VA0000PeR01,2026-12-01,Priya Raman,Detail Only,Planned_vod,Cardovex 10 mg,,

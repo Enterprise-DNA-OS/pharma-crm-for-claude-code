@@ -1,11 +1,33 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "starter-pack-record",
+    "title": "Starter pack request and delivery record",
+    "for_each": "select id, ref from samples where status = 'delivered' order by ref",
+    "file": "ref",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      { "title": "Request", "layout": "record", "note": "A written request before supply, with the name and address of the person supplied and the name, strength and quantity of the starter packs (Medicines Australia Code Ed. 20 s 6.1.5). Keep this record at least two years (s 6.1.6).", "sql": "select ref, hcp as professional, profession, request_address as name_and_address, product_name as product, quantity, requested_on, request_kind as request from v_samples where id = $1" },
+      { "title": "Delivery", "layout": "record", "note": "New Zealand: the rep records the issue and gets the prescriber's signature (Medicines NZ Code Ed. 17 s 4.18.6), and the lot is kept so a recall reaches it (s 4.18.7).", "sql": "select delivered_on, rep, sample_licence as rep_licence, lot_number, lot_expires as lot_expiry, receipt_signed_on as receipt_signed, recalled_on as lot_recalled, recall_told_on from v_samples where id = $1" }
+    ]
+  },
+  {
+    "name": "rep-stock-statement",
+    "title": "Sample stock statement",
+    "for_each": "select id, code from reps where status = 'active' order by code",
+    "file": "code",
+    "sections": [
+      { "title": "Stock on hand", "sql": "select product_name as product, lot_number, expires_on, on_hand, standing from v_rep_stock where rep_id = $1 order by product, expires_on" },
+      { "title": "Movements, last 90 days", "sql": "select m.ref, m.moved_on, m.kind, p.code as product, l.lot_number, m.qty, coalesce(s.ref, '') as sample, coalesce(m.note, '') as note from stock_moves m join lots l on l.id = m.lot_id join products p on p.id = l.product_id left join samples s on s.id = m.sample_id where m.rep_id = $1 and m.moved_on >= current_date - 90 order by m.moved_on, m.ref" }
+    ]
+  },
+  {
+    "name": "event-record",
+    "title": "Event record",
+    "for_each": "select id, ref from events where status <> 'cancelled' order by ref",
+    "file": "ref",
+    "sections": [
+      { "title": "Event", "layout": "record", "note": "Hospitality secondary to the education, moderate and inside the cap (Medicines Australia Code Ed. 20 ss 4.5.2 and 4.5.3; Medicines NZ Code Ed. 17 s 4.8.2).", "sql": "select ref, title, kind, country, held_on, venue, education, hours, meal_cents as food_and_drink_per_head_cents, case when country = 'NZ' then 'NZD' else 'AUD' end as currency, status from events where id = $1" },
+      { "title": "Attendees", "sql": "select h.name, h.profession, a.role, case when a.attended then 'yes' when a.attended is false then 'no' else 'not recorded' end as attended from attendees a join hcps h on h.id = a.hcp_id where a.event_id = $1 order by a.role, h.name" },
+      { "title": "Payments to professionals", "sql": "select x.ref, h.name, x.kind, x.amount_cents, x.currency, x.paid_on, x.notice_given_on as notice from transfers x join hcps h on h.id = x.hcp_id where x.event_id = $1 order by x.ref" }
     ]
   }
 ]

@@ -1,0 +1,4 @@
+Id,FirstName,LastName,Credentials_vod__c,Specialty_1_vod__c,Primary_Parent_vod__c,PersonEmail,Account_Identifier_vod__c,Segment
+001VA0000PeR01,Claire,Dunn,MBBS FRACGP,General Practice,001VA0000AbC01,claire.dunn@example.com,MED0011112222,A
+001VA0000PeR02,Arjun,Patel,MBBS FRACP,Endocrinology,001VA0000AbC02,arjun.patel@example.com,MED0011113333,B
+001VA0000PeR03,Megan,Ross,RN,Practice Nursing,001VA0000AbC01,megan.ross@example.com,NMW0011114444,C

@@ -2,12 +2,65 @@
   {
     "name": "week",
     "title": "This week",
-    "subtitle": "Pharma CRM for Claude Code: what needs attention, rendered by npm run view",
+    "subtitle": "What needs a person: Code breaches first, then recalls, starter packs, follow-ups and who has not been seen",
     "sections": [
       {
         "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "note": "Every breach and every rule clock in the records, with the section of the Code behind it. The same list as /compliance.",
+        "sql": "select severity, rule, ref, who, detail from v_issues order by case severity when 'breach' then 0 else 1 end, rule"
+      },
+      {
+        "title": "Starter packs and follow-ups",
+        "sql": "select 'starter pack' as item, ref, hcp as professional, product_name as detail, requested_on as since from v_samples where status = 'requested' union all select 'follow-up', c.ref, h.name, coalesce(c.next_step, 'follow up'), c.follow_up_on from calls c join hcps h on h.id = c.hcp_id where c.follow_up_done_on is null and c.follow_up_on <= current_date + 7 order by since"
+      },
+      {
+        "title": "Behind target this cycle",
+        "sql": "select territory, code, name, segment, target_calls as target, cycle_calls as calls, last_call_on, rep from v_hcps where status = 'active' and cycle_calls < target_calls order by territory, segment, last_call_on nulls first"
+      }
+    ]
+  },
+  {
+    "name": "coverage",
+    "title": "Coverage",
+    "subtitle": "Reach and frequency against the call plan, by territory and segment",
+    "sections": [
+      {
+        "title": "This cycle",
+        "sql": "select territory, segment, count(*)::int as professionals, sum(target_calls)::int as target_calls, sum(cycle_calls)::int as calls_made, count(*) filter (where cycle_calls > 0)::int as reached, round(100.0 * count(*) filter (where cycle_calls >= target_calls) / count(*))::int as on_target_pct from v_hcps where status = 'active' and target_calls > 0 group by territory, segment order by territory, segment"
+      },
+      {
+        "title": "Calls by rep, last 30 days",
+        "sql": "select r.name as rep, count(*)::int as calls, count(distinct c.hcp_id)::int as professionals, count(*) filter (where c.channel = 'remote')::int as remote from calls c join reps r on r.id = c.rep_id where c.call_on >= current_date - 30 group by r.name order by calls desc"
+      }
+    ]
+  },
+  {
+    "name": "samples",
+    "title": "Samples and stock",
+    "subtitle": "Starter packs out, stock with each rep, and every recalled or expired lot",
+    "sections": [
+      {
+        "title": "Stock with reps",
+        "sql": "select rep, product_name as product, lot_number, expires_on, on_hand, standing from v_rep_stock order by case standing when 'recalled' then 0 when 'expired' then 1 when 'short-dated' then 2 else 3 end, rep"
+      },
+      {
+        "title": "Starter packs, last 90 days",
+        "sql": "select ref, hcp as professional, territory, product_name as product, quantity, requested_on, delivered_on, lot_number, receipt_signed_on as signed from v_samples where coalesce(delivered_on, requested_on) >= current_date - 90 order by coalesce(delivered_on, requested_on) desc"
+      }
+    ]
+  },
+  {
+    "name": "transparency",
+    "title": "Transfers of value",
+    "subtitle": "What goes to Disclosure Australia each half-year, and where each report stands",
+    "sections": [
+      {
+        "title": "Reports",
+        "sql": "select period_from, period_to, due_on, transfers, amount_cents, 'AUD' as currency, reviews_sent, submitted_on, declaration_on, standing from v_transparency order by period_from desc"
+      },
+      {
+        "title": "Reportable transfers, open periods",
+        "sql": "select x.ref, x.hcp as professional, x.kind, x.amount_cents, x.currency, x.paid_on, x.notice_given_on as notice, x.review_sent_on as review_sent, x.due_on from v_reportable x left join transparency_reports r on r.period_from = x.period_from where r.submitted_on is null order by x.paid_on"
       }
     ]
   }

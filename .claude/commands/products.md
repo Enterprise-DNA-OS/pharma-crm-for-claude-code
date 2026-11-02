@@ -1,0 +1,9 @@
+---
+description: "Every product: strength, form, whether it is registered and has starter packs, units with reps and details in the last 90 days."
+---
+
+# products
+
+Every product: strength, form, whether it is registered and has starter packs, units with reps and details in the last 90 days.
+
+Run `node scripts/crm.mjs products`. Add `--json` when you need every field. Resolve the professional, practice, rep, lot, sample, event or territory by name first; if the CLI says a name is ambiguous, list the candidates and ask. Replace every angle-bracket value with a fact from the records or the operator. Never run a placeholder.
